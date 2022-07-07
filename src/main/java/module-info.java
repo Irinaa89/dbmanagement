@@ -9,6 +9,7 @@ module app.dbmanagement {
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
+    requires java.sql;
 
     opens app.dbmanagement to javafx.fxml;
     exports app.dbmanagement;

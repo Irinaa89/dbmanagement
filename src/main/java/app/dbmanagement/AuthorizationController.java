@@ -35,7 +35,13 @@ public class AuthorizationController {
     @FXML
     void initialize() {
         loginInButton.setOnAction(event ->{
-            System.out.println("Войти");
+            String loginText = login_field.getText().trim();
+            String loginPassword = password_field.getText().trim();
+
+            if (!loginText.equals("") && !loginPassword.equals(""))
+                loginUser(loginText, loginPassword);
+            else
+                System.out.println("Login and password is empty");
         });
 
         signup.setOnAction(event ->{
@@ -56,6 +62,9 @@ public class AuthorizationController {
             stage.setScene(new Scene(root));
             stage.showAndWait();
         });
+    }
+
+    private void loginUser(String loginText, String loginPassword) {
     }
 
 }
