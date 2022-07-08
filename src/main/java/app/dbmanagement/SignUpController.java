@@ -1,12 +1,17 @@
 package app.dbmanagement;
 
+import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 public class SignUpController {
 
@@ -15,6 +20,9 @@ public class SignUpController {
 
     @FXML
     private URL location;
+
+    @FXML
+    private Button signUpBack;
 
     @FXML
     private TextField login_field;
@@ -26,24 +34,50 @@ public class SignUpController {
     private Button signUpButton;
 
     @FXML
-    private CheckBox signUpFemale;
+    private TextField signUpGroup;
 
     @FXML
-    private TextField signUpLastName;
-
-    @FXML
-    private TextField signUpMail;
-
-    @FXML
-    private CheckBox signUpMale;
-
-    @FXML
-    private TextField signUpName;
+    private TextField signUpRank;
 
     @FXML
     void initialize() {
+        signUpBack.setOnAction(actionEvent -> {
+            signUpButton.getScene().getWindow().hide();
 
+            Stage stage = new Stage();
 
+            Parent root = null;
+            try {
+                root = FXMLLoader.load(getClass().getResource( "authorization.fxml"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            stage.setScene(new Scene(root));
+            stage.setTitle("Authorization");
+            stage.show();
+
+        });
+
+        signUpButton.setOnAction(event ->{
+            signUPNewUser();
+        });
     }
 
+    private void signUPNewUser() {
+        DatabaseHandler dbHandler = new DatabaseHandler();
+
+        String group = signUpGroup.getText();
+        String login = login_field.getText();
+        String password = password_field.getText();
+        
+        User user = new User(group, login, password);
+
+        try {
+            dbHandler.signUpUser(user);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 }
