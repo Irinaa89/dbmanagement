@@ -11,6 +11,10 @@ public class User {
         this.study_group = study_group;
     }
 
+    public User() {
+
+    }
+
     public String getLogin() {
         return login;
     }

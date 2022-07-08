@@ -27,4 +27,19 @@ public class DatabaseHandler extends Configs{
             prSt.executeUpdate();
 
     }
+
+    public ResultSet getUser(User user) throws SQLException, ClassNotFoundException {
+        ResultSet resSet = null;
+
+        String select = "SELECT * FROM " + Const.USER_TABLE + " WHERE " +
+                Const.USERS_LOGIN + "=? AND " + Const.USERS_PASSWORD + "=?";
+
+        PreparedStatement prSt = getDbConnection().prepareStatement(select);
+        prSt.setString(1, user.getLogin());
+        prSt.setString(2, user.getPassword());
+
+        resSet = prSt.executeQuery();
+
+        return resSet;
+    }
 }

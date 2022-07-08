@@ -66,11 +66,11 @@ public class SignUpController {
     private void signUPNewUser() {
         DatabaseHandler dbHandler = new DatabaseHandler();
 
-        String group = signUpGroup.getText();
         String login = login_field.getText();
         String password = password_field.getText();
-        
-        User user = new User(group, login, password);
+        String group = signUpGroup.getText();
+
+        User user = new User(login, password, group);
 
         try {
             dbHandler.signUpUser(user);
