@@ -21,8 +21,8 @@ public class DatabaseHandler extends Configs{
             PreparedStatement prSt = getDbConnection().prepareStatement(insert);
             prSt.setString(1, user.getLogin());
             prSt.setString(2, user.getPassword());
-            prSt.setString(3, user.getStudy_group());
-            prSt.setString(4, null);
+            prSt.setString(3, user.getStudyGroup());
+            prSt.setString(4, "user");
 
             prSt.executeUpdate();
 

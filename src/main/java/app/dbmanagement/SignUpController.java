@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -70,14 +71,28 @@ public class SignUpController {
         String password = password_field.getText();
         String group = signUpGroup.getText();
 
-        User user = new User(login, password, group);
+        if (!login.equals("") && !password.equals("") && !group.equals("")) {
+            User user = new User(login, password, group);
 
-        try {
-            dbHandler.signUpUser(user);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            try {
+                dbHandler.signUpUser(user);
+            } catch (SQLException e) {
+                e.printStackTrace();
+
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText(null);
+                alert.setContentText("Данный логин уже используется.");
+                alert.showAndWait();
+
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText(null);
+            alert.setContentText("Нельзя оставлять поля пустыми.");
+            alert.showAndWait();
         }
     }
 }

@@ -1,19 +1,21 @@
 package app.dbmanagement;
 
 public class User {
+    private int id;
     private String login;
     private String password;
-    private String study_group;
+    private String studyGroup;
+    private String rank;
 
-    public User(String login, String password, String study_group) {
+
+    public User(String login, String password, String studyGroup) {
         this.login = login;
         this.password = password;
-        this.study_group = study_group;
+        this.studyGroup = studyGroup;
+        this.rank = null;
     }
 
-    public User() {
-
-    }
+    public User() {}
 
     public String getLogin() {
         return login;
@@ -31,11 +33,27 @@ public class User {
         this.password = password;
     }
 
-    public String getStudy_group() {
-        return study_group;
+    public String getStudyGroup() {
+        return studyGroup;
     }
 
-    public void setStudy_group(String study_group) {
-        this.study_group = study_group;
+    public void setStudyGroup(String studyGroup) {
+        this.studyGroup = studyGroup;
+    }
+
+    public String getRank() {
+        return rank;
+    }
+
+    public void setRank(String rank) {
+        this.rank = rank;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

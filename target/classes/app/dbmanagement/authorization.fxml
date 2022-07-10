@@ -64,5 +64,13 @@
             </Button>
          </children>
       </HBox>
+      <Button fx:id="guest" layoutX="454.0" layoutY="475.0" mnemonicParsing="false" style="-fx-background-color: 0;" text="Войти гостем" textFill="WHITE">
+         <font>
+            <Font name="Constantia" size="12.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
    </children>
 </AnchorPane>

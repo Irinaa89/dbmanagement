@@ -17,5 +17,5 @@ public class Const {
     public static final String TEACHERS_FIRST_NAME = "first_name";
     public static final String TEACHERS_SECOND_NAME = "second_name";
     public static final String TEACHERS_LESSON = "lesson";
-    public static final String TEACHERS_DATE = "publication_date";
+    public static final String TEACHERS_DATE = "date";
 }

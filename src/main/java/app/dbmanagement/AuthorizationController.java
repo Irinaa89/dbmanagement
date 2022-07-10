@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -32,10 +33,25 @@ public class AuthorizationController {
     private PasswordField password_field;
 
     @FXML
+    private Button guest;
+
+    @FXML
     private Button signup;
+
+    public static User user = new User();
 
     @FXML
     void initialize() {
+
+        guest.setOnAction(actionEvent -> {
+            try {
+                user.setRank("guest");
+                changeScene("app", "Главная страница (Гость)");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
         loginInButton.setOnAction(event ->{
             String loginText = login_field.getText().trim();
             String loginPassword = password_field.getText().trim();
@@ -45,69 +61,65 @@ public class AuthorizationController {
                     loginUser(loginText, loginPassword);
                 } catch (SQLException e) {
                     e.printStackTrace();
-                } catch (ClassNotFoundException e) {
+                } catch (ClassNotFoundException | IOException e) {
                     e.printStackTrace();
                 }
             }
-            else
-                System.out.println("Login and password is empty");
+            else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText(null);
+                alert.setContentText("Поля не могут быть пустыми.");
+                alert.showAndWait();
+            }
         });
 
-        signup.setOnAction(event ->{
-            signup.getScene().getWindow().hide();
-
-            FXMLLoader loader = new FXMLLoader();
-            //loader.setLocation(getClass().getResource("/app.dbmanagement/SignUP.fxml"));
-            System.out.println(getClass().getResource("SignUP.fxml"));
-            loader.setLocation(getClass().getResource("SignUP.fxml"));
-
+        signup.setOnAction(actionEvent -> {
             try {
-                loader.load();
+                changeScene("signUP", "Регистрация");
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            Parent root = loader.getRoot();
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.showAndWait();
         });
     }
 
-    private void loginUser(String loginText, String loginPassword) throws SQLException, ClassNotFoundException {
+    private void loginUser(String loginText, String loginPassword) throws SQLException, ClassNotFoundException, IOException {
         DatabaseHandler dbHandler = new DatabaseHandler();
         User user = new User();
         user.setLogin(loginText);
         user.setPassword(loginPassword);
         ResultSet result = dbHandler.getUser(user);
 
-        int counter = 0;
-        while (result.next()){
-            counter++;
-        }
 
-        if(counter >= 1) {
-            signup.getScene().getWindow().hide();
+        if (result.next()) {
+            do {
+                this.user = user;
+                user.setId(result.getInt(1));
+                user.setStudyGroup(result.getString(4));
+                user.setRank(result.getString(5));
 
-            FXMLLoader loader = new FXMLLoader();
-            //loader.setLocation(getClass().getResource("/app.dbmanagement/SignUP.fxml"));
-            System.out.println(getClass().getResource("app.fxml"));
-            loader.setLocation(getClass().getResource("app.fxml"));
+                if (user.getRank().equals("admin")) {
+                    changeScene("app", "Главная страница (Администратор)");
+                } else if (user.getRank().equals("user")) {
+                    changeScene("app", "Главная страница (Пользователь)");
+                } else if (user.getRank().equals("elder")) {
+                    changeScene("app", "Главная страница (Староста)");
+                }
+            } while(result.next());
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText(null);
+            alert.setContentText("Пользователь не найден");
+            alert.showAndWait();
+        }
+    }
 
-            try {
-                loader.load();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            Parent root = loader.getRoot();
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.showAndWait();
-        }
-        else {
-            Animation userLoginAnim = new Animation(login_field);
-            Animation userPassAnim = new Animation(password_field);
-            userLoginAnim.playAnim();
-            userPassAnim.playAnim();
-        }
+    public void changeScene(String fileName, String sceneName) throws IOException {
+        signup.getScene().getWindow().hide();
+        Stage stage = new Stage();
+
+        Parent root = FXMLLoader.load(getClass().getResource(fileName + ".fxml"));
+        stage.setScene(new Scene(root));
+        stage.setTitle(sceneName);
+        stage.show();
     }
 }
