@@ -7,8 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -96,7 +94,7 @@ public class HomeController {
             edit.setDisable(true);
         }
 
-// -- Если пользователь выделил не свою запись, кнопка "удалить" будет недоступна
+//Выделена не своя запись - кнопки недоступны
         if (AuthorizationController.user.getRank().equals("user")) {
             delete.setDisable(true);
             edit.setDisable(true);
@@ -116,7 +114,7 @@ public class HomeController {
 
         loadDate();
 
-        // -- Обработка событий при нажатии на кнопку "Обновить"
+        //Кнопка обновить
         update.setOnAction(actionEvent -> {
             try {
                 refreshTable();
@@ -126,7 +124,7 @@ public class HomeController {
             }
         });
 
-        // -- Обработка событий при нажатии на кнопку "Выйти"
+        //Кнопка выйти
         back.setOnAction(actionEvent -> {
             back.getScene().getWindow().hide();
 
@@ -144,26 +142,10 @@ public class HomeController {
         });
     }
 
-    // -- Обновить данные в таблице
+    //Обновление данных в таблице
     private void refreshTable() throws SQLException {
         quotesList.clear();
-
-        if (AuthorizationController.user.getRank().equals("guest")) query = "SELECT * FROM " + Const.TEACHER_QUOTES_TABLE;
-        if (AuthorizationController.user.getRank().equals("admin")) query = "SELECT * FROM " + Const.TEACHER_QUOTES_TABLE;
-        if (AuthorizationController.user.getRank().equals("user")) query =
-                "SELECT teacher_quotes.id, teacher_quotes.user_id, teacher_quotes.quote, teacher_quotes.last_name, teacher_quotes.first_name, " +
-                        "teacher_quotes.second_name, teacher_quotes.lesson, teacher_quotes.date " +
-                        "FROM users " +
-                        "JOIN teacher_quotes ON (users.id = teacher_quotes.user_id) " +
-                        "WHERE (users.study_group ='" + AuthorizationController.user.getStudyGroup() + "')";
-
-        if (AuthorizationController.user.getRank().equals("elder")) query =
-                "SELECT teacher_quotes.id, teacher_quotes.user_id, teacher_quotes.quote, teacher_quotes.last_name, teacher_quotes.first_name, " +
-                        "teacher_quotes.second_name, teacher_quotes.lesson, teacher_quotes.date " +
-                        "FROM users " +
-                        "JOIN teacher_quotes ON (users.id = teacher_quotes.user_id) " +
-                        "WHERE (users.study_group ='" + AuthorizationController.user.getStudyGroup() + "')";
-
+        String query = "SELECT * FROM " + Const.TEACHER_QUOTES_TABLE;
         preparedStatement = connection.prepareStatement(query);
         resultSet = preparedStatement.executeQuery();
 
@@ -185,7 +167,7 @@ public class HomeController {
 
     }
 
-    // -- Загрузить данные с базы данных в приложение
+    //Загрузка данных с бд в приложение
     private void loadDate() throws SQLException, ClassNotFoundException {
 
         connection = db.getDbConnection();
@@ -201,7 +183,7 @@ public class HomeController {
         dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
     }
 
-    @FXML // -- Открыть окно с добавлением цитаты на кнопку "Добавить"
+    @FXML //Окно с добавлением цитаты на кнопке добавить
     public void getAddView(javafx.scene.input.MouseEvent mouseEvent) throws IOException {
 
         Parent parent = FXMLLoader.load(getClass().getResource("add.fxml"));
@@ -215,7 +197,7 @@ public class HomeController {
         System.out.println(AuthorizationController.user.getId());
     }
 
-    @FXML // -- Удалить выделенный элемент
+    @FXML //Удаление выделенного элемента
     public void deleteItem(MouseEvent event) throws SQLException, ClassNotFoundException {
         connection = db.getDbConnection();
 
@@ -226,7 +208,8 @@ public class HomeController {
         refreshTable();
     }
 
-    @FXML // -- Изменить выделенный элемент
+    //Изменение выделенного элемента
+    @FXML
     void editItem(MouseEvent event) throws SQLException, ClassNotFoundException, IOException {
         currentQuoteId = table.getSelectionModel().getSelectedItem().id;
         currentQuoteUserId = table.getSelectionModel().getSelectedItem().user_id;
@@ -238,6 +221,5 @@ public class HomeController {
         stage.setTitle("Изменить цитату");
         stage.initStyle(StageStyle.UTILITY);
         stage.show();
-
     }
 }

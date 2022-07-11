@@ -1,17 +1,13 @@
 package app.dbmanagement;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
-
 import java.sql.*;
-import java.time.LocalDate;
 import java.time.ZoneId;
-
 
 public class EditQuote {
 
@@ -53,7 +49,7 @@ public class EditQuote {
     private boolean update;
 
 
-    // -- Очистить поля
+    //Очистить поля
     @FXML
     void clean(MouseEvent event) {
         editQuote.setText(null);
@@ -63,7 +59,7 @@ public class EditQuote {
         editLesson.setText(null);
     }
 
-    // -- Добавить запись в таблицу
+    //Добавление записи в таблицу
     @FXML
     void save(MouseEvent event) throws SQLException, ClassNotFoundException {
         String quote = editQuote.getText();
@@ -72,23 +68,21 @@ public class EditQuote {
         String second_name = editSecondName.getText();
         String lesson = editLesson.getText();
 
-        // -- Дополнительная проверка на ошибки с заполнениями полей
+        //Доп. проверка на ошибки с заполнениями полей
         try {
             Date date = Date.valueOf(editDate.getValue());
             if (quote.isEmpty() || last_name.isEmpty() || first_name.isEmpty() || second_name.isEmpty() || lesson.isEmpty() || date.equals("")) {
-                //setAlertText("Все поля должны быть заполнены!", "red");
-            } else {
+            }
+            else {
                 getQuery();
                 insert();
-                //setAlertText("Запись успешно изменена!", "#31e100");
             }
-        } catch (Exception e) {
-            //setAlertText("Дата записана в неправильном формате!", "red");
         }
-
+        catch (Exception e) {
+        }
     }
 
-    // -- Добавить запись в sql database
+    //Добавление записи в sql
     private void insert() throws SQLException {
         preparedStatement = connection.prepareStatement(query);
         preparedStatement.setInt(1, HomeController.currentQuoteUserId);
@@ -98,7 +92,7 @@ public class EditQuote {
         preparedStatement.setString(5, editSecondName.getText());
         preparedStatement.setString(6, editLesson.getText());
 
-        // -- Перевести дату в нужный sql формат
+        //Перевод даты в нужный sql формат
         java.util.Date date =
                 java.util.Date.from(editDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
         java.sql.Date sqlDate = new java.sql.Date(date.getTime());
@@ -107,7 +101,7 @@ public class EditQuote {
         preparedStatement.execute();
     }
 
-    // -- Заполнение sql запроса
+    //Заполнение sql запроса
     private void getQuery() throws SQLException, ClassNotFoundException {
         connection = db.getDbConnection();
         query = "UPDATE " + Const.TEACHER_QUOTES_TABLE + " SET "  + Const.TEACHERS_USERID + "=?, " + Const.TEACHERS_QUOTE + "=?, " + Const.TEACHERS_LAST_NAME + "=?, " +

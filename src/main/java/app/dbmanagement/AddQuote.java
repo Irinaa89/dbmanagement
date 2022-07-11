@@ -52,7 +52,7 @@ public class AddQuote {
     int quoteUserId;
     private boolean update;
 
-    // -- Очистить поля
+    //Очистить поля
     @FXML
     void clean(MouseEvent event) {
         addQuote.setText(null);
@@ -62,7 +62,7 @@ public class AddQuote {
         addLesson.setText(null);
     }
 
-    // -- Добавить запись в таблицу
+    //Добавление записи
     @FXML
     void save(MouseEvent event) throws SQLException, ClassNotFoundException {
         String quote = addQuote.getText();
@@ -71,22 +71,24 @@ public class AddQuote {
         String second_name = addSecondName.getText();
         String lesson = addLesson.getText();
 
-        // -- Дополнительная проверка на ошибки с заполнениями полей
+        //Доп. проверка на ошибки с заполнениями полей
         try {
             Date date = Date.valueOf(addDate.getValue());
             if (quote.isEmpty() || last_name.isEmpty() || first_name.isEmpty() || second_name.isEmpty() || lesson.isEmpty() || date.equals("")) {
                 System.out.println("Поля пусты");
-            } else {
+            }
+            else {
                 getQuery();
                 insert();
             System.out.println("Запись добавлена");
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    // -- Добавить запись в sql database
+    //Добавление записи в sql
     private void insert() throws SQLException {
         preparedStatement = connection.prepareStatement(query);
         preparedStatement.setInt(1, AuthorizationController.user.getId());
@@ -96,7 +98,7 @@ public class AddQuote {
         preparedStatement.setString(5, addSecondName.getText());
         preparedStatement.setString(6, addLesson.getText());
 
-        // -- Перевести дату в нужный sql формат
+        //Перевод даты в нужный sql формат
         java.util.Date date =
                 java.util.Date.from(addDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
         java.sql.Date sqlDate = new java.sql.Date(date.getTime());
@@ -105,7 +107,7 @@ public class AddQuote {
         preparedStatement.execute();
     }
 
-    // -- Заполнение sql запроса
+    //Заполнение sql запроса
     private void getQuery() throws SQLException, ClassNotFoundException {
         connection = db.getDbConnection();
         query = "INSERT INTO " + Const.TEACHER_QUOTES_TABLE + " (" + Const.TEACHERS_USERID + ", " + Const.TEACHERS_QUOTE + ", " + Const.TEACHERS_LAST_NAME + ", " +

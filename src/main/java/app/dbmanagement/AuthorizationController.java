@@ -42,7 +42,7 @@ public class AuthorizationController {
 
     @FXML
     void initialize() {
-
+        // Кнопка гость
         guest.setOnAction(actionEvent -> {
             try {
                 user.setRank("guest");
@@ -51,7 +51,7 @@ public class AuthorizationController {
                 e.printStackTrace();
             }
         });
-
+        //Кнопка войти
         loginInButton.setOnAction(event ->{
             String loginText = login_field.getText().trim();
             String loginPassword = password_field.getText().trim();
@@ -72,7 +72,7 @@ public class AuthorizationController {
                 alert.showAndWait();
             }
         });
-
+        //Кнопка регистрации
         signup.setOnAction(actionEvent -> {
             try {
                 changeScene("signUP", "Регистрация");

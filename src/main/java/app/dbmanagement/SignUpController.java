@@ -42,6 +42,7 @@ public class SignUpController {
 
     @FXML
     void initialize() {
+        //Кнопка выйти к окну авторизации
         signUpBack.setOnAction(actionEvent -> {
             signUpButton.getScene().getWindow().hide();
 
@@ -58,7 +59,7 @@ public class SignUpController {
             stage.show();
 
         });
-
+        //Кнопка зарегистрироваться
         signUpButton.setOnAction(event ->{
             signUPNewUser();
         });
@@ -76,7 +77,8 @@ public class SignUpController {
 
             try {
                 dbHandler.signUpUser(user);
-            } catch (SQLException e) {
+            }
+            catch (SQLException e) {
                 e.printStackTrace();
 
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -84,7 +86,8 @@ public class SignUpController {
                 alert.setContentText("Данный логин уже используется.");
                 alert.showAndWait();
 
-            } catch (ClassNotFoundException e) {
+            }
+            catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
         }
