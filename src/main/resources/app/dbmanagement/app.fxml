@@ -8,10 +8,11 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1000.0" style="-fx-background-color: #9f7afe;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.dbmanagement.HomeController">
    <children>
-      <ImageView fitHeight="500.0" fitWidth="1000.0" opacity="0.4" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <ImageView fitHeight="500.0" fitWidth="1000.0" layoutX="14.0" opacity="0.4" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="-14.0" AnchorPane.topAnchor="0.0">
          <image>
             <Image url="@clouds.png" />
          </image>
@@ -68,5 +69,15 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
+      <Text fill="WHITE" layoutX="347.0" layoutY="443.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Количество цитат пользователя:">
+         <font>
+            <Font name="Constantia" size="14.0" />
+         </font>
+      </Text>
+      <Text fx:id="countQuoteText" fill="WHITE" layoutX="567.0" layoutY="443.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="74.0">
+         <font>
+            <Font name="Constantia" size="14.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

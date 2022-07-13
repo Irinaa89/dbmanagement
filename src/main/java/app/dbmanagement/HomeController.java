@@ -20,6 +20,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -30,6 +31,9 @@ public class HomeController {
 
     @FXML
     private URL location;
+
+    @FXML
+    private Text countQuoteText;
 
     @FXML
     private Button add;
@@ -83,6 +87,8 @@ public class HomeController {
     public static int currentQuoteId;
     public static int currentQuoteUserId;
 
+    int count = 0;
+
     ObservableList<Quote> quotesList = FXCollections.observableArrayList();
 
     @FXML
@@ -101,6 +107,7 @@ public class HomeController {
             table.setOnMousePressed(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
+
                     if ((AuthorizationController.user.getId() == table.getSelectionModel().getSelectedItem().user_id)) {
                         delete.setDisable(false);
                         edit.setDisable(false);
@@ -164,7 +171,7 @@ public class HomeController {
 
             table.setItems(quotesList);
         }
-
+        countQuoteText.setText(String.valueOf(countQuote()));
     }
 
     //Загрузка данных с бд в приложение
@@ -181,6 +188,8 @@ public class HomeController {
         second_nameColumn.setCellValueFactory(new PropertyValueFactory<>("second_name"));
         lessonColumn.setCellValueFactory(new PropertyValueFactory<>("lesson"));
         dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
+
+        countQuoteText.setText(String.valueOf(countQuote()));
     }
 
     @FXML //Окно с добавлением цитаты на кнопке добавить
@@ -206,6 +215,7 @@ public class HomeController {
         preparedStatement = connection.prepareStatement(query);
         preparedStatement.execute();
         refreshTable();
+        countQuoteText.setText(String.valueOf(countQuote()));
     }
 
     //Изменение выделенного элемента
@@ -221,5 +231,14 @@ public class HomeController {
         stage.setTitle("Изменить цитату");
         stage.initStyle(StageStyle.UTILITY);
         stage.show();
+    }
+//Счетчик цитат
+    public int countQuote(){
+        count = 0;
+        for (int i = 0; i < table.getItems().size(); i++){
+            if(AuthorizationController.user.getId() == table.getItems().get(i).user_id)
+                count ++;
+        }
+        return count;
     }
 }

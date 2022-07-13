@@ -81,7 +81,7 @@ public class AuthorizationController {
             }
         });
     }
-
+    //Заполняет объект класса User user для работы с ним в других классах
     private void loginUser(String loginText, String loginPassword) throws SQLException, ClassNotFoundException, IOException {
         DatabaseHandler dbHandler = new DatabaseHandler();
         User user = new User();

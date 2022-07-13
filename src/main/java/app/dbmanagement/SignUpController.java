@@ -64,7 +64,7 @@ public class SignUpController {
             signUPNewUser();
         });
     }
-
+//Добавляет нового пользователя в базу данных
     private void signUPNewUser() {
         DatabaseHandler dbHandler = new DatabaseHandler();
 

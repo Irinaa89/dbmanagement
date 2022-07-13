@@ -3,6 +3,7 @@ import java.sql.*;
 
 public class DatabaseHandler extends Configs{
     Connection dbConnection;
+    //Установление соединения с бд
     public Connection getDbConnection() throws ClassNotFoundException, SQLException{
         String connectionString = "jdbc:mysql://" + host + ":" + port + "/" + name;
 
@@ -12,7 +13,7 @@ public class DatabaseHandler extends Configs{
 
         return dbConnection;
     }
-
+//Запись пользователей в бд
     public void signUpUser(User user) throws SQLException, ClassNotFoundException {
         String insert = "INSERT INTO " + Const.USER_TABLE + " (" + Const.USERS_LOGIN + ", " +
                 Const.USERS_PASSWORD + ", " + Const.USERS_STUDY_GROUP + ", " + Const.USERS_RANK + ") " +
@@ -25,9 +26,8 @@ public class DatabaseHandler extends Configs{
             prSt.setString(4, "user");
 
             prSt.executeUpdate();
-
     }
-
+//Заполняет объект класса User user необходимыми данными
     public ResultSet getUser(User user) throws SQLException, ClassNotFoundException {
         ResultSet resSet = null;
 
